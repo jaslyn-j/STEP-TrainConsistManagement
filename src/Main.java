@@ -2,26 +2,26 @@ import java.util.*;
 
 /**
  * author: Jaslyn
- * version: 3.0
+ * version: 4.0
  */
 
 public class Main {
     public static void main(String args[]){
         System.out.println("Train Consist Management App: ");
 
-        Set<String>  bogies= new HashSet<String>();
+        List<String> trainConsist = new LinkedList<>();
 
-        bogies.add("BG101");
-        bogies.add("BG102");
-        bogies.add("BG103");
-        bogies.add("BG104");
-        //duplicate entries test
-        bogies.add("BG101");
-        bogies.add("BG102");
-
-        System.out.println("Bogie IDs after insertion:\n" + bogies);
-
-        System.out.println("\nNote:\nDuplicates are automatically ignore by hashset");
-
+        trainConsist.add("Engine");
+        trainConsist.add("Sleeper");
+        trainConsist.add("AC");
+        trainConsist.add("Cargo");
+        trainConsist.add("Guard");
+        System.out.println("Initial Train Consist: \n" + trainConsist);
+        trainConsist.add(2, "Pantry Car");
+        System.out.println("After insert Pantry Car at index 2: \n" + trainConsist);
+        trainConsist.removeFirst();
+        trainConsist.removeLast();
+        System.out.println("After removing first and last bogies: \n" + trainConsist);
+        System.out.println("Final Train Consist: \n" + trainConsist);
     }
 }
