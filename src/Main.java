@@ -9,19 +9,12 @@ public class Main {
     public static void main(String args[]){
         System.out.println("Train Consist Management App: ");
 
-        List<String> trainConsist = new LinkedList<>();
-
-        trainConsist.add("Engine");
-        trainConsist.add("Sleeper");
-        trainConsist.add("AC");
-        trainConsist.add("Cargo");
-        trainConsist.add("Guard");
-        System.out.println("Initial Train Consist: \n" + trainConsist);
-        trainConsist.add(2, "Pantry Car");
-        System.out.println("After insert Pantry Car at index 2: \n" + trainConsist);
-        trainConsist.removeFirst();
-        trainConsist.removeLast();
-        System.out.println("After removing first and last bogies: \n" + trainConsist);
-        System.out.println("Final Train Consist: \n" + trainConsist);
+        Set<String> formation = new LinkedHashSet<>();
+        formation.add("Engine");
+        formation.add("Sleeper");
+        formation.add("Cargo");
+        formation.add("Guard");
+        formation.add("Engine"); //testing duplicate property
+        System.out.println("Final Train Formation: " + formation);
     }
 }
