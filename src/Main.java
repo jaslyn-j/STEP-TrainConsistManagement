@@ -1,49 +1,56 @@
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * author: Jaslyn
- * @version 12.0
+ * @version 13.0
  */
 public class Main{
-    static class GoodsBogie {
+    static class Bogie {
         String type;
-        String cargo;
+        int    capacity;
 
-        GoodsBogie(String type, String cargo) {
-            this.type  = type;
-            this.cargo = cargo;
-        }
-
-        @Override
-        public String toString() {
-            return type + " - " + cargo;
+        Bogie(String type, int capacity) {
+            this.type     = type;
+            this.capacity = capacity;
         }
     }
-    public static boolean isSafetyCompliant(List<GoodsBogie> bogies) {
-        Predicate<GoodsBogie> safetyRule = bogie ->
-                !bogie.type.equalsIgnoreCase("Cylindrical")
-                        || bogie.cargo.equalsIgnoreCase("Petroleum");
+    static final int CAPACITY_THRESHOLD = 60;
 
-        return bogies.stream().allMatch(safetyRule);
+    public static List<Bogie> filterWithLoop(List<Bogie> bogies) {
+        List<Bogie> result = new ArrayList<>();
+        for (Bogie b : bogies) {
+            if (b.capacity > CAPACITY_THRESHOLD) {
+                result.add(b);
+            }
+        }
+        return result;
+    }
+    public static List<Bogie> filterWithStream(List<Bogie> bogies) {
+        return bogies.stream()
+                .filter(b -> b.capacity > CAPACITY_THRESHOLD)
+                .collect(Collectors.toList());
     }
 
     public static void main(String[] args) {
+        List<Bogie> bogies = new ArrayList<>();
+        String[] types = {"Sleeper", "AC Chair", "First Class", "Open", "Box"};
+        for (int i = 0; i < 100_000; i++) {
+            bogies.add(new Bogie(types[i % types.length], 30 + (i % 80)));
+        }
 
-        List<GoodsBogie> goodsBogies = new ArrayList<>();
-        goodsBogies.add(new GoodsBogie("Cylindrical", "Petroleum"));
-        goodsBogies.add(new GoodsBogie("Open","Coal"));
-        goodsBogies.add(new GoodsBogie("Box","Grain"));
-        goodsBogies.add(new GoodsBogie("Cylindrical","Coal"));   // violation
+        long loopStart  = System.nanoTime();
+        List<Bogie> loopResult = filterWithLoop(bogies);
+        long loopEnd    = System.nanoTime();
+        long loopTime   = loopEnd - loopStart;
 
-        System.out.println("Goods Bogies in Train:");
-        goodsBogies.forEach(System.out::println);
+        long streamStart  = System.nanoTime();
+        List<Bogie> streamResult = filterWithStream(bogies);
+        long streamEnd    = System.nanoTime();
+        long streamTime   = streamEnd - streamStart;
 
-        boolean isSafe = isSafetyCompliant(goodsBogies);
-
-        System.out.println("\nSafety Compliance Status: " + isSafe);
-        System.out.println(isSafe ? "Train formation is SAFE" : "Train formation is NOT SAFE");
-
+        System.out.println("Loop Execution Time (ns): " + loopTime);
+        System.out.println("Stream Execution Time (ns): " + streamTime);
     }
 }
