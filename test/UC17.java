@@ -1,53 +1,40 @@
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-class UC17{
+class UC18{
+    private static final String[] STANDARD =
+            {"BG101", "BG205", "BG309", "BG412", "BG550"};
 
     @Test
-    void testSort_BasicAlphabeticalSorting() {
-        String[] names = {"Sleeper", "AC Chair", "First Class", "General", "Luxury"};
-        Main.sortBogieNames(names);
-        assertArrayEquals(
-                new String[]{"AC Chair", "First Class", "General", "Luxury", "Sleeper"},
-                names,
-                "Names should be sorted alphabetically");
+    void testSearch_BogieFound() {
+        assertTrue(Main.linearSearch(STANDARD, "BG309"),
+                "BG309 exists in the array and must be found");
     }
 
     @Test
-    void testSort_UnsortedInput() {
-        String[] names = {"Luxury", "General", "Sleeper", "AC Chair"};
-        Main.sortBogieNames(names);
-        assertArrayEquals(
-                new String[]{"AC Chair", "General", "Luxury", "Sleeper"},
-                names,
-                "Unsorted input should be rearranged alphabetically");
+    void testSearch_BogieNotFound() {
+        assertFalse(Main.linearSearch(STANDARD, "BG999"),
+                "BG999 does not exist; must return false");
     }
 
     @Test
-    void testSort_AlreadySortedArray() {
-        String[] names = {"AC Chair", "First Class", "General"};
-        Main.sortBogieNames(names);
-        assertArrayEquals(
-                new String[]{"AC Chair", "First Class", "General"},
-                names,
-                "Already sorted array must remain unchanged");
+    void testSearch_FirstElementMatch() {
+        assertTrue(Main.linearSearch(STANDARD, "BG101"),
+                "BG101 is at index 0; must be found immediately");
     }
 
     @Test
-    void testSort_DuplicateBogieNames() {
-        String[] names = {"Sleeper", "AC Chair", "Sleeper", "General"};
-        Main.sortBogieNames(names);
-        assertArrayEquals(
-                new String[]{"AC Chair", "General", "Sleeper", "Sleeper"},
-                names,
-                "Duplicates must be retained and correctly positioned");
+    void testSearch_LastElementMatch() {
+        assertTrue(Main.linearSearch(STANDARD, "BG550"),
+                "BG550 is the last element; must still be found");
     }
 
     @Test
-    void testSort_SingleElementArray() {
-        String[] names = {"Sleeper"};
-        Main.sortBogieNames(names);
-        assertArrayEquals(new String[]{"Sleeper"}, names,
-                "Single element array must remain unchanged");
+    void testSearch_SingleElementArray() {
+        String[] single = {"BG101"};
+        assertTrue(Main.linearSearch(single, "BG101"),
+                "Single element array with matching ID must return true");
+        assertFalse(Main.linearSearch(single, "BG999"),
+                "Single element array with non-matching ID must return false");
     }
 }
