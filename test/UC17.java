@@ -1,56 +1,41 @@
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-class UC19{
-
-    private static final String[] STANDARD =
-            {"BG101", "BG205", "BG309", "BG412", "BG550"};
-
+class UC20{
     @Test
-    void testBinarySearch_BogieFound() {
-        assertTrue(Main.binarySearch(STANDARD.clone(), "BG309"),
-                "BG309 must be found in the sorted array");
+    void testSearch_ThrowsExceptionWhenEmpty() {
+        assertThrows(
+                IllegalStateException.class,
+                () -> Main.searchBogie(new String[]{}, "BG101"),
+                "Empty array must trigger IllegalStateException");
     }
 
     @Test
-    void testBinarySearch_BogieNotFound() {
-        assertFalse(Main.binarySearch(STANDARD.clone(), "BG999"),
-                "BG999 does not exist; must return false");
+    void testSearch_AllowsSearchWhenDataExists() {
+        String[] bogies = {"BG101", "BG205"};
+        assertDoesNotThrow(
+                () -> Main.searchBogie(bogies, "BG101"),
+                "Non-empty array must not throw during search");
     }
 
     @Test
-    void testBinarySearch_FirstElementMatch() {
-        assertTrue(Main.binarySearch(STANDARD.clone(), "BG101"),
-                "BG101 at the start must be found");
+    void testSearch_BogieFoundAfterValidation() {
+        String[] bogies = {"BG101", "BG205", "BG309"};
+        assertTrue(Main.searchBogie(bogies, "BG205"),
+                "BG205 must be found after passing state validation");
     }
 
     @Test
-    void testBinarySearch_LastElementMatch() {
-        assertTrue(Main.binarySearch(STANDARD.clone(), "BG550"),
-                "BG550 at the end must be found");
+    void testSearch_BogieNotFoundAfterValidation() {
+        String[] bogies = {"BG101", "BG205", "BG309"};
+        assertFalse(Main.searchBogie(bogies, "BG999"),
+                "BG999 must return false after passing state validation");
     }
 
     @Test
-    void testBinarySearch_SingleElementArray() {
-        assertTrue(Main.binarySearch(
-                        new String[]{"BG101"}, "BG101"),
-                "Single element match must return true");
-        assertFalse(Main.binarySearch(
-                        new String[]{"BG101"}, "BG999"),
-                "Single element non-match must return false");
-    }
-
-    @Test
-    void testBinarySearch_EmptyArray() {
-        assertFalse(Main.binarySearch(new String[]{}, "BG101"),
-                "Empty array must return false without error");
-    }
-
-    @Test
-    void testBinarySearch_UnsortedInputHandled() {
-        // Method sorts internally before searching
-        String[] unsorted = {"BG309", "BG101", "BG550", "BG205", "BG412"};
-        assertTrue(Main.binarySearch(unsorted, "BG205"),
-                "BG205 must be found even if input was unsorted");
+    void testSearch_SingleElementValidCase() {
+        String[] bogies = {"BG101"};
+        assertTrue(Main.searchBogie(bogies, "BG101"),
+                "Single element array must find the matching ID");
     }
 }

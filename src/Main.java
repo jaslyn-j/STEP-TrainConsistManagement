@@ -3,49 +3,41 @@ import java.util.List;
 
 /**
  * author: Jaslyn
- * @version 19.0
+ * @version 20.0
  */
 public class Main{
-    public static boolean binarySearch(String[] bogieIds, String searchId) {
+    public static boolean searchBogie(String[] bogieIds, String searchId) {
         if (bogieIds == null || bogieIds.length == 0) {
-            return false;
+            throw new IllegalStateException(
+                    "No bogies available in train. Cannot perform search.");
         }
-        Arrays.sort(bogieIds);
-
-        int low  = 0;
-        int high = bogieIds.length - 1;
-
-        while (low <= high) {
-            int mid= low + (high - low) / 2;
-            int cmp = searchId.compareTo(bogieIds[mid]);
-
-            if (cmp == 0) {
+        for (String id : bogieIds) {
+            if (id.equals(searchId)) {
                 return true;
-            } else if (cmp > 0) {
-                low = mid + 1;
-            } else {
-                high = mid - 1;
             }
         }
         return false;
     }
 
     public static void main(String[] args) {
-        String[] bogieIds = {"BG101", "BG205", "BG309", "BG412", "BG550"};
-        Arrays.sort(bogieIds);
+        String[] bogieIds = {};
+        String searchId = "BG101";
 
-        String key = "BG309";
-        System.out.println("Sorted Bogie IDs:");
-        for (String id : bogieIds) {
-            System.out.println(id);
+        if (bogieIds.length == 0) {
+            throw new IllegalStateException(
+                    "No bogies available in train. Cannot perform search.");
         }
-        boolean found = binarySearch(bogieIds, key);
-
-        System.out.println();
+        boolean found = false;
+        for (String id : bogieIds) {
+            if (id.equals(searchId)) {
+                found = true;
+                break;
+            }
+        }
         if (found) {
-            System.out.println("Bogie " + key + " found using Binary Search.");
+            System.out.println("Bogie " + searchId + " found.");
         } else {
-            System.out.println("Bogie " + key + " not found.");
+            System.out.println("Bogie " + searchId + " not found.");
         }
     }
 }
