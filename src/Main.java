@@ -3,48 +3,34 @@ import java.util.List;
 
 /**
  * author: Jaslyn
- * @version 15.0
+ * @version 16.0
  */
 public class Main{
-    static class CargoSafetyException extends RuntimeException {
-        public CargoSafetyException(String message) {
-            super(message);
-        }
-    }
-    static class GoodsBogie {
-        String shape;
-        String cargo;
-
-        GoodsBogie(String shape) {
-            this.shape = shape;
-        }
-        void assignCargo(String cargo) {
-            try {
-                if (shape.equalsIgnoreCase("Rectangular")
-                        && cargo.equalsIgnoreCase("Petroleum")) {
-                    throw new CargoSafetyException("Unsafe cargo assignment");
+    public static void bubbleSort(int[] capacities) {
+        int n = capacities.length;
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = 0; j < n - 1 - i; j++) {
+                if (capacities[j] > capacities[j + 1]) {
+                    int temp = capacities[j];
+                    capacities[j]= capacities[j + 1];
+                    capacities[j + 1] = temp;
                 }
-                this.cargo = cargo;
-                System.out.println("Cargo assigned successfully -> " + cargo);
-
-            } catch (CargoSafetyException e) {
-                System.out.println("Error: " + e.getMessage());
-
-            } finally {
-                System.out.println("Cargo validation completed for "
-                        + shape + " bogie");
             }
         }
     }
 
     public static void main(String[] args) {
+        int[] capacities = {72, 56, 24, 70, 60};
 
-        GoodsBogie cylindrical = new GoodsBogie("Cylindrical");
-        cylindrical.assignCargo("Petroleum");
+        System.out.println("Original Capacities:");
+        for (int c : capacities) {
+            System.out.print(c + " ");
+        }
+        bubbleSort(capacities);
 
-        System.out.println();
-
-        GoodsBogie rectangular = new GoodsBogie("Rectangular");
-        rectangular.assignCargo("Petroleum");
+        System.out.println("\n\nSorted Capacities (Ascending):");
+        for (int c : capacities) {
+            System.out.print(c + " ");
+        }
     }
 }
