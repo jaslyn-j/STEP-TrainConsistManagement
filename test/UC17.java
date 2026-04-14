@@ -1,40 +1,56 @@
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-class UC18{
+class UC19{
+
     private static final String[] STANDARD =
             {"BG101", "BG205", "BG309", "BG412", "BG550"};
 
     @Test
-    void testSearch_BogieFound() {
-        assertTrue(Main.linearSearch(STANDARD, "BG309"),
-                "BG309 exists in the array and must be found");
+    void testBinarySearch_BogieFound() {
+        assertTrue(Main.binarySearch(STANDARD.clone(), "BG309"),
+                "BG309 must be found in the sorted array");
     }
 
     @Test
-    void testSearch_BogieNotFound() {
-        assertFalse(Main.linearSearch(STANDARD, "BG999"),
+    void testBinarySearch_BogieNotFound() {
+        assertFalse(Main.binarySearch(STANDARD.clone(), "BG999"),
                 "BG999 does not exist; must return false");
     }
 
     @Test
-    void testSearch_FirstElementMatch() {
-        assertTrue(Main.linearSearch(STANDARD, "BG101"),
-                "BG101 is at index 0; must be found immediately");
+    void testBinarySearch_FirstElementMatch() {
+        assertTrue(Main.binarySearch(STANDARD.clone(), "BG101"),
+                "BG101 at the start must be found");
     }
 
     @Test
-    void testSearch_LastElementMatch() {
-        assertTrue(Main.linearSearch(STANDARD, "BG550"),
-                "BG550 is the last element; must still be found");
+    void testBinarySearch_LastElementMatch() {
+        assertTrue(Main.binarySearch(STANDARD.clone(), "BG550"),
+                "BG550 at the end must be found");
     }
 
     @Test
-    void testSearch_SingleElementArray() {
-        String[] single = {"BG101"};
-        assertTrue(Main.linearSearch(single, "BG101"),
-                "Single element array with matching ID must return true");
-        assertFalse(Main.linearSearch(single, "BG999"),
-                "Single element array with non-matching ID must return false");
+    void testBinarySearch_SingleElementArray() {
+        assertTrue(Main.binarySearch(
+                        new String[]{"BG101"}, "BG101"),
+                "Single element match must return true");
+        assertFalse(Main.binarySearch(
+                        new String[]{"BG101"}, "BG999"),
+                "Single element non-match must return false");
+    }
+
+    @Test
+    void testBinarySearch_EmptyArray() {
+        assertFalse(Main.binarySearch(new String[]{}, "BG101"),
+                "Empty array must return false without error");
+    }
+
+    @Test
+    void testBinarySearch_UnsortedInputHandled() {
+        // Method sorts internally before searching
+        String[] unsorted = {"BG309", "BG101", "BG550", "BG205", "BG412"};
+        assertTrue(Main.binarySearch(unsorted, "BG205"),
+                "BG205 must be found even if input was unsorted");
     }
 }
